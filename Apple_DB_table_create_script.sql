@@ -5,11 +5,11 @@ use AppleECommerce;
 CREATE TABLE IF NOT EXISTS Apple_account(
 Account_ID INT UNIQUE NOT NULL,
 Email VARCHAR(50) UNIQUE NOT NULL,
-Phone_number CHAR(10) NOT NULL,
+Phone_number CHAR(12) NOT NULL,
 Login_verification_method VARCHAR(6) NOT NULL,
 country VARCHAR(40) NOT NULL,
 name VARCHAR(60) NOT NULL,
-address VARCHAR(200) NOT NULL,
+address VARCHAR(100) NOT NULL,
 password CHAR(32) UNIQUE NOT NULL,
 CONSTRAINT pk_acc PRIMARY KEY (Account_ID),
 CONSTRAINT chk_login_verification_method CHECK (Login_verification_method in ('OTP', 'device', 'Email')),
@@ -18,8 +18,8 @@ CONSTRAINT chk_Account_ID CHECK (Account_ID > 0)
 
 CREATE TABLE IF NOT EXISTS Physical_store(
 store_number INT UNIQUE NOT NULL,
-address VARCHAR(200) NOT NULL,
-name VARCHAR(100) NOT NULL,
+address VARCHAR(100) NOT NULL,
+name VARCHAR(50) NOT NULL,
 CONSTRAINT pk_store PRIMARY KEY (store_number)
 );
 
