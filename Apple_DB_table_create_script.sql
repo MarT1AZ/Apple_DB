@@ -24,8 +24,8 @@ CONSTRAINT pk_store PRIMARY KEY (store_number)
 );
 
 CREATE TABLE IF NOT EXISTS ProductLine(
-product_line_name VARCHAR(50) UNIQUE NOT NULL,
-description VARCHAR(200),
+product_line_name VARCHAR(15) UNIQUE NOT NULL,
+description VARCHAR(400),
 CONSTRAINT pk_pline PRIMARY KEY (product_line_name)
 );
 
@@ -62,15 +62,15 @@ CONSTRAINT chk_rec_num CHECK (record_number > 0)
 );
 
 CREATE TABLE IF NOT EXISTS Week_day(
-opening_time DATETIME NOT NULL,
-closing_time DATETIME NOT NULL,
-day_name VARCHAR(9) UNIQUE NOT NULL,
+opening_time TIME NOT NULL,
+closing_time TIME NOT NULL,
+day_name VARCHAR(9) NOT NULL,
 store_number INT  NOT NULL,
 CONSTRAINT pk_day PRIMARY KEY (store_number,day_name),
 CONSTRAINT fk_store FOREIGN KEY (store_number) REFERENCES Physical_store(store_number),
-CONSTRAINT ck_dayname CHECK (day_name IN ('tuesday', 'wednesday', 
+CONSTRAINT ck_dayname CHECK (day_name IN ('monday','tuesday', 'wednesday', 
 											'thursday', 'friday', 
-											'saturda', 'sunday'))
+											'saturday', 'sunday'))
 );
 
 
