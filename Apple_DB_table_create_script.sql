@@ -84,12 +84,22 @@ description VARCHAR(200),
 product_type VARCHAR(30),
 name VARCHAR(40) UNIQUE NOT NULL,
 product_line_name VARCHAR(50) NOT NULL,
-product_compat_number INT,
+installment_price DECIMAL(6,2),
+price INT NOT NULL,
 CONSTRAINT pk_product PRIMARY KEY (product_number),
-CONSTRAINT fk_compat_product FOREIGN KEY (product_compat_number) REFERENCES Product(product_number),
 CONSTRAINT ck_prod_num CHECK (product_number > 0),
-CONSTRAINT ck_num_inv CHECK (number_of_item_in_inventory >= 0)
+CONSTRAINT ck_num_inv CHECK (number_of_item_in_inventory >= 0),
+CONSTRAINT ck_price CHECK (number_of_item_in_inventory > 0),
+CONSTRAINT ck_isn_price CHECK (number_of_item_in_inventory > 0)
 );
+
+CREATE TABLE IF NOT EXISTS Compatability(
+product_number INT NOT NULL,
+accessory_number INT NOT NULL,
+CONSTRAINT fk_compat_product FOREIGN KEY (product_number) REFERENCES Product(product_number),
+CONSTRAINT fk_compat_accessory FOREIGN KEY (accessory_number) REFERENCES Product(product_number)
+);
+
 
 -- Include (product number, record number, unit ordered)
 -- Consist of (product number, order number, unit ordered)
