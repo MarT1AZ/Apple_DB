@@ -1,6 +1,9 @@
 DROP DATABASE AppleECommerce;
-CREATE DATABASE IF NOT EXISTS AppleECommerce;
+CREATE DATABASE IF NOT EXISTS AppleECommerce
+	DEFAULT CHARACTER SET utf8mb4
+	DEFAULT COLLATE utf8mb4_0900_as_cs;
 use AppleECommerce;
+
 
 CREATE TABLE IF NOT EXISTS Apple_account(
 Account_ID INT UNIQUE NOT NULL,
@@ -23,11 +26,7 @@ name VARCHAR(50) NOT NULL,
 CONSTRAINT pk_store PRIMARY KEY (store_number)
 );
 
-CREATE TABLE IF NOT EXISTS ProductLine(
-product_line_name VARCHAR(15) UNIQUE NOT NULL,
-description VARCHAR(400),
-CONSTRAINT pk_pline PRIMARY KEY (product_line_name)
-);
+
 
 
 -- Purchase record (record number, delivery option, confirm payment method, 
@@ -74,24 +73,32 @@ CONSTRAINT ck_dayname CHECK (day_name IN ('monday','tuesday', 'wednesday',
 );
 
 
--- Product ( product number, number of item in inventory, description, 
--- product type, name, product line name, Product.product_number)
+CREATE TABLE IF NOT EXISTS ProductLine(
+line_id INT UNIQUE NOT NULL,
+product_line_name VARCHAR(20) UNIQUE NOT NULL,
+description VARCHAR(400),
+CONSTRAINT pk_pline PRIMARY KEY (product_line_name),
+CONSTRAINT ck_line_id CHECK (line_id >= 0)
+);
 
 CREATE TABLE IF NOT EXISTS Product(
 product_number INT UNIQUE NOT NULL,
 number_of_item_in_inventory INT,
-description VARCHAR(200),
+description VARCHAR(350),
 product_type VARCHAR(30),
-name VARCHAR(40) UNIQUE NOT NULL,
-product_line_name VARCHAR(50) NOT NULL,
-installment_price DECIMAL(6,2),
+name VARCHAR(60) UNIQUE NOT NULL,
+line_id INT NOT NULL,
+installment_price DECIMAL(6,2) DEFAULT NULL,
 price INT NOT NULL,
 CONSTRAINT pk_product PRIMARY KEY (product_number),
 CONSTRAINT ck_prod_num CHECK (product_number > 0),
 CONSTRAINT ck_num_inv CHECK (number_of_item_in_inventory >= 0),
-CONSTRAINT ck_price CHECK (number_of_item_in_inventory > 0),
-CONSTRAINT ck_isn_price CHECK (number_of_item_in_inventory > 0)
+CONSTRAINT ck_price CHECK (price > 0),
+CONSTRAINT ck_isn_price CHECK (installment_price > 0),
+CONSTRAINT fk_line_id FOREIGN KEY (line_id) REFERENCES ProductLine(line_id)
 );
+
+
 
 CREATE TABLE IF NOT EXISTS Compatability(
 product_number INT NOT NULL,
